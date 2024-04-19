@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - dotnet-zc-installer
   pull_request:
     paths:
       - '.github/workflows/installer-script-test.yml'
@@ -97,7 +98,7 @@ jobs:
           else
             tests="$distro and ${{ matrix.ARCH }} and ${{ matrix.INSTRUMENTATION }}"
           fi
-          python3 -u -m pytest -s --verbose -k "$tests" \
+          STAGE=test python3 -u -m pytest -s --verbose -k "$tests" \
             internal/buildscripts/packaging/tests/installer_test.py
 
       # qemu, networking, running systemd in containers, etc., can be flaky
@@ -114,6 +115,6 @@ jobs:
           else
             tests="$distro and ${{ matrix.ARCH }} and ${{ matrix.INSTRUMENTATION }}"
           fi
-          python3 -u -m pytest -s --verbose -k "$tests" \
+          STAGE=test python3 -u -m pytest -s --verbose -k "$tests" \
             --last-failed \
             internal/buildscripts/packaging/tests/installer_test.py
